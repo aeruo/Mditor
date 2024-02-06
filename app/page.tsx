@@ -2,7 +2,7 @@
 // Add necessary types/interfaces as needed
 
 import { useRef, useState, useEffect } from 'react';
-import { FaAngleDown, FaCircleInfo, FaEye, FaX, FaDeleteLeft, FaWandMagicSparkles } from "react-icons/fa6";
+import { FaAngleDown, FaCircleInfo, FaEye, FaX, FaDeleteLeft, FaWandMagicSparkles, FaHeading, FaBold, FaUnderline, FaItalic, FaLink, FaImage, FaCode, FaQuoteLeft} from "react-icons/fa6";
 import dynamic from 'next/dynamic';
 import ReactMarkdown from 'react-markdown';
 // ... (imports remain unchanged)
@@ -175,6 +175,20 @@ const MarkdownEditor: React.FC = () => {
     setShowSidebar(!showSidebar);
   };
 
+  const insertTextAtCursor = (textToInsert: string): void => {
+    if (!editorRef.current) return;
+
+    const textarea = editorRef.current;
+    const startPos: number = textarea.selectionStart || 0;
+    const endPos: number = textarea.selectionEnd || 0;
+    const newText: string =
+      textarea.value.substring(0, startPos) + textToInsert + textarea.value.substring(endPos);
+    textarea.value = newText;
+
+    textarea.focus();
+    textarea.setSelectionRange(startPos + textToInsert.length, startPos + textToInsert.length);
+  };
+
   return (
     <>
       <header className="w-full px-4 py-3 fixed bg-gray-900 flex justify-between items-center">
@@ -194,12 +208,31 @@ const MarkdownEditor: React.FC = () => {
         </div>
       </header>
       <main className="w-full h-[95vh] pt-[64px] flex">
-        <div className="w-2/4 h-full">
+        <div className="w-2/4 h-full relative">
           <div className="bg-white w-full h-[6%] px-4 py-2 border-b border-slate-500 flex items-center">
             <div className="group" onClick={toggleShowGuide}><FaCircleInfo /></div>
             <p className="text-sm font-mono ml-2">Markdown</p>
           </div>
           <textarea onScroll={handleScroll} ref={editorRef} value={documents[currentDocumentIndex]?.content || ''} onChange={handleChange} className="w-full h-[94%] bg-zinc-200 p-4 outline-none font-mono"></textarea>
+          <div className="absolute bottom-4 left-4 bg-white shadow-lg p-2 rounded-md text-sm flex items-center">
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('__Bold Text__')}><FaBold/></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('_Italic Text_')}><FaItalic/></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor(' `inline code`')}><FaCode/></button>
+            <button className="p-2 rounded-sm flex items-center hover:bg-slate-200 relative group">
+              <FaHeading/>
+              <p className="text-[8px]">&#9650;</p>
+              <div className="absolute bottom-10 rounded-md bg-white shadow-lg p-2 flex hidden group-hover:block">
+                <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-xl" onClick={() => insertTextAtCursor('# Large Heading')}>H1</p>
+                <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-lg" onClick={() => insertTextAtCursor('## Heading')}>H2</p>
+                <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-md" onClick={() => insertTextAtCursor('### Heading')}>H3</p>
+                <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-sm" onClick={() => insertTextAtCursor('#### Heading')}>H4</p>
+              </div>
+            </button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('> Quote')}><FaQuoteLeft/></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('[caption](https://yoururl.com/link)')}><FaLink/></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('![alt](https://yoururl.com/link)')}><FaImage/></button>
+
+          </div>
         </div>
         <div className="w-2/4 h-full border-l border-slate-500">
           <div className="bg-white w-full h-[6%] px-4 py-2 border-b border-slate-500 flex items-center">
@@ -207,7 +240,7 @@ const MarkdownEditor: React.FC = () => {
             <p className="text-sm font-mono ml-2">Result Preview</p>
           </div>
           <div ref={previewRef} className="w-full h-[94%] overflow-y-scroll font-sans-serif p-5">
-            <ReactMarkdown className="w-full h-full markdown-preview">{documents[currentDocumentIndex]?.content || ''}</ReactMarkdown>
+            <ReactMarkdown className="w-full h-full pb-8 preview">{documents[currentDocumentIndex]?.content || ''}</ReactMarkdown>
           </div>
         </div>
       </main>
