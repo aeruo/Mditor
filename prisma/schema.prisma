@@ -15,4 +15,5 @@ model Page {
   author   String
   content  String
   theme    String
+  slug     String
 }

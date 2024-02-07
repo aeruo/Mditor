@@ -1,15 +1,21 @@
 "use client"
-// Add necessary types/interfaces as needed
-
 import { useRef, useState, useEffect } from 'react';
 import { FaAngleDown, FaCircleInfo, FaEye, FaX, FaDeleteLeft, FaWandMagicSparkles, FaHeading, FaBold, FaUnderline, FaItalic, FaLink, FaImage, FaCode, FaQuoteLeft} from "react-icons/fa6";
 import dynamic from 'next/dynamic';
 import ReactMarkdown from 'react-markdown';
-// ... (imports remain unchanged)
 
 interface Document {
   title: string;
   content: string;
+}
+
+interface Page {
+  id: number;
+  slug: string;
+  title: string;
+  author: string;
+  content: string;
+  theme: string;
 }
 
 const MarkdownEditor: React.FC = () => {
@@ -22,7 +28,7 @@ const MarkdownEditor: React.FC = () => {
       code += characters.charAt(randomIndex);
     }
   
-    return "Document_" + code;
+    return code;
   }
 
   const [documents, setDocuments] = useState<Document[]>([]);
@@ -189,6 +195,52 @@ const MarkdownEditor: React.FC = () => {
     textarea.setSelectionRange(startPos + textToInsert.length, startPos + textToInsert.length);
   };
 
+  /* INCOMPLETE CREATE PAGE LOGIC --------------------------------------------------------------------------------------------------
+
+  const [showPageModal, setShowPageModal] = useState<boolean>(false);
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
+  const [slug, setSlug] = useState<string>(generateDocumentName())
+  const [pageTitle, setPageTitle] = useState<string>('')
+  const [author, setAuthor] = useState<string>('')
+  const [theme, setTheme] = useState<string>('default')
+  const [pageUrl, setPageUrl] = useState<string>('https://mditor.vercel.app/')
+
+  const createPage = async () => {
+    console.log(slug)
+    try {
+      const response = await fetch('/api/v1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: pageTitle,
+          author: author,
+          content: documents[currentDocumentIndex]?.content || '',
+          theme: theme,  
+          slug: slug,
+        })
+      });
+      if (response.ok) {
+        const newPage = await response.json();
+        console.log('New page created:', newPage);
+        setShowPageModal(false)
+        setPageUrl("https://mditor.vercel.app/" + newPage.slug)
+        setShowSuccessModal(true)
+        setPageTitle('');
+        setAuthor('');
+        setTheme('default');
+      } else {
+        alert('Owch, something wen\'t wrong')
+      }
+    } catch (error) {
+      console.error('Error creating page:', error);
+      alert('Owch, something wen\'t wrong' + error)
+    }
+  };
+
+  ----------------------------------------------------------------------------------------------------------------------------------- */
+
   return (
     <>
       <header className="w-full px-4 py-3 fixed bg-gray-900 flex justify-between items-center">
@@ -201,7 +253,7 @@ const MarkdownEditor: React.FC = () => {
           </div>
         </div>
         <div className="flex w-fit items-center">
-          <button className="p-2 py-2 text-sm bg-gradient-to-r from-teal-500 to-purple-500 text-gray-900 rounded-md ml-2 text-white hover:bg-teal-400"> Create page</button>
+          <button className="p-2 py-2 text-sm bg-slate-500 rounded-md ml-2 text-slate-700 hover:cursor-disabled flex items-center" disabled> <FaWandMagicSparkles className="mr-2"/> Create page (Soon)</button>
           <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={handleCreateNewDocument}> New Document</button>
           <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={handleSaveDocument}>{saveButtonText}</button>
           <button className="p-2 py-0 text-white rounded-md ml-2 text-xl" onClick={toggleShowSidebar}>&#x2630;</button>
@@ -275,6 +327,57 @@ const MarkdownEditor: React.FC = () => {
           </div>
         </section>
       ) : (<></>)}
+      {/*
+{ showPageModal ? (
+        <section className="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-[.8] pt-[2.5%]">
+        <div className="h-[95%] w-[70%] m-auto bg-white rounded-md p-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-teal-500">Create a page</h1>
+              <p className="text-md">Publish a public page from the current document</p>
+            </div>
+            <div>
+              <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={createPage}>Create Page</button>
+              <button className="p-2 py-2 text-sm bg-slate-300 text-gray-900 rounded-md ml-2 hover:bg-slate-400" onClick={(e) => setShowPageModal(false)}>Cancel</button>
+            </div>
+          </div>
+          <div className="mt-6">
+            <p className="text-md font-semibold">Select a title for your page:</p>
+            <input type="text" name="title" id="title" className="p-2 w-2/4 rounded-md border my-2" placeholder="Nmeza's PSA" onChange={(e) => setPageTitle(e.target.value)}/>
+            <p className="text-md font-semibold">Author name:</p>
+            <input type="text" name="title" id="title" className="p-2 w-2/4 rounded-md border my-2" placeholder="@xyu_txsu" onChange={(e) => setAuthor(e.target.value)}/>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-md font-semibold">Choose a theme:</h3>
+            <div className="w-full mt-2">
+              <div className="p-2 inline-block mr-4 rounded-md bg-slate-200 ">
+                <img src="https://via.placeholder.com/200" alt="preview" className="rounded-md h-[180px] w-[250px]"/>
+                <p className="text-sm mt-2">Default</p>
+              </div>
+              <div className="p-2 inline-block mr-4 rounded-md">
+                <img src="https://via.placeholder.com/200" alt="preview" className="rounded-md h-[180px] w-[250px]"/>
+                <p className="text-sm mt-2">Default (Dark)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      ):(<></>)}
+
+      { showSuccessModal ? (
+         <section className="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-[.8] pt-[200px]">
+         <div className="w-[50%] m-auto bg-white rounded-md p-8">
+           <h1 className="text-2xl font-bold">Your page was created 🎉</h1>
+           <p className="text-md">Your page will stay live untill the next wipe on September 4th.</p>
+           <input type="text" name="title" id="title" className="p-2 w-full rounded-md border my-2" value={pageUrl}/>
+           <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md hover:bg-teal-400">Copy Link</button>
+           <button className="p-2 py-2 text-sm bg-slate-300 text-gray-900 rounded-md ml-2 hover:bg-slate-400">Close</button>
+         </div>
+       </section>
+      ) : (<></>)}
+       */}
+      
+
     </>
   );
 };
