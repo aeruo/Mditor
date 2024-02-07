@@ -195,52 +195,6 @@ const MarkdownEditor: React.FC = () => {
     textarea.setSelectionRange(startPos + textToInsert.length, startPos + textToInsert.length);
   };
 
-  /* INCOMPLETE CREATE PAGE LOGIC --------------------------------------------------------------------------------------------------
-
-  const [showPageModal, setShowPageModal] = useState<boolean>(false);
-  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
-  const [slug, setSlug] = useState<string>(generateDocumentName())
-  const [pageTitle, setPageTitle] = useState<string>('')
-  const [author, setAuthor] = useState<string>('')
-  const [theme, setTheme] = useState<string>('default')
-  const [pageUrl, setPageUrl] = useState<string>('https://mditor.vercel.app/')
-
-  const createPage = async () => {
-    console.log(slug)
-    try {
-      const response = await fetch('/api/v1', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          title: pageTitle,
-          author: author,
-          content: documents[currentDocumentIndex]?.content || '',
-          theme: theme,  
-          slug: slug,
-        })
-      });
-      if (response.ok) {
-        const newPage = await response.json();
-        console.log('New page created:', newPage);
-        setShowPageModal(false)
-        setPageUrl("https://mditor.vercel.app/" + newPage.slug)
-        setShowSuccessModal(true)
-        setPageTitle('');
-        setAuthor('');
-        setTheme('default');
-      } else {
-        alert('Owch, something wen\'t wrong')
-      }
-    } catch (error) {
-      console.error('Error creating page:', error);
-      alert('Owch, something wen\'t wrong' + error)
-    }
-  };
-
-  ----------------------------------------------------------------------------------------------------------------------------------- */
-
   return (
     <>
       <header className="w-full px-4 py-3 fixed bg-gray-900 flex justify-between items-center">
