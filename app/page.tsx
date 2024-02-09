@@ -238,7 +238,7 @@ const MarkdownEditor: React.FC = () => {
       });
       console.log(response.data);
 
-      setUrl("https://mditor.com/p/" + slug)
+      setUrl("https://mditor.vercel.app/p/" + slug)
 
       // reset states
       setSlug(generateDocumentName)
