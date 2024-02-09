@@ -23,7 +23,7 @@ export default function Page({ params }: Props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response: AxiosResponse<PostData> = await axios.get<PostData>('https://5000-kunhnao-mditor-w50rz90hi9d.ws-eu108.gitpod.io/api/' + params.slug, {
+                const response: AxiosResponse<PostData> = await axios.get<PostData>('https://mditorapi.onrender.com/api/' + params.slug, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
