@@ -10,3 +10,4 @@ sqlparse
 termcolor
 Werkzeug
 Gunicorn
+flask_cors
