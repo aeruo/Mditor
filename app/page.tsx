@@ -1,8 +1,9 @@
 "use client"
 import { useRef, useState, useEffect } from 'react';
-import { FaAngleDown, FaCircleInfo, FaEye, FaX, FaDeleteLeft, FaWandMagicSparkles, FaHeading, FaBold, FaUnderline, FaItalic, FaLink, FaImage, FaCode, FaQuoteLeft} from "react-icons/fa6";
+import { FaAngleDown, FaCircleInfo, FaEye, FaX, FaDeleteLeft, FaWandMagicSparkles, FaHeading, FaBold, FaUnderline, FaItalic, FaLink, FaImage, FaCode, FaQuoteLeft } from "react-icons/fa6";
 import dynamic from 'next/dynamic';
 import ReactMarkdown from 'react-markdown';
+import axios, { AxiosResponse } from 'axios';
 
 interface Document {
   title: string;
@@ -10,11 +11,15 @@ interface Document {
 }
 
 interface Page {
-  id: number;
+  title: string;
+  url: string;
+}
+
+interface PageData {
   slug: string;
+  content: string;
   title: string;
   author: string;
-  content: string;
   theme: string;
 }
 
@@ -22,12 +27,12 @@ const MarkdownEditor: React.FC = () => {
   function generateDocumentName(): string {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let code = '';
-  
+
     for (let i = 0; i < 6; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
       code += characters.charAt(randomIndex);
     }
-  
+
     return code;
   }
 
@@ -39,11 +44,11 @@ const MarkdownEditor: React.FC = () => {
   useEffect(() => {
     // Load documents from localStorage on component mount
     const localStorageItem = localStorage.getItem('mditorDocs');
-  
+
     // Check if the localStorage item exists and is not null
     let savedDocuments: Document[] = [];
-  
-    if (localStorageItem){
+
+    if (localStorageItem) {
       savedDocuments = JSON.parse(localStorageItem);
     } else {
       const newDocument: Document = { title: generateDocumentName(), content: '# Welcome!' };
@@ -51,15 +56,15 @@ const MarkdownEditor: React.FC = () => {
       setCurrentDocumentIndex(0);
       setCustomTitle(newDocument.title);
     }
-  
+
     setDocuments(savedDocuments);
-  
+
     // Set the latest document as the current document on page load
     if (savedDocuments.length > 0) {
       setCurrentDocumentIndex(savedDocuments.length - 1);
     }
   }, []);
-  
+
 
   useEffect(() => {
     // Set the title according to the current document when the page reloads
@@ -73,7 +78,7 @@ const MarkdownEditor: React.FC = () => {
       const updatedDocuments = [...prevDocuments];
       console.log("currentDocumentIndex:", currentDocumentIndex);
       console.log("updatedDocuments length:", updatedDocuments.length);
-      
+
       updatedDocuments[currentDocumentIndex].content = event.target.value;
       return updatedDocuments;
     });
@@ -118,7 +123,7 @@ const MarkdownEditor: React.FC = () => {
   const handleDeleteDocument = (index: number) => {
     const updatedDocuments = [...documents];
     updatedDocuments.splice(index, 1);
-  
+
     if (updatedDocuments.length === 0) {
       // If all documents are deleted, reset state to initial values
       const newDocument: Document = { title: generateDocumentName(), content: '# Welcome!' };
@@ -135,9 +140,9 @@ const MarkdownEditor: React.FC = () => {
         setCurrentDocumentIndex(currentDocumentIndex - 1);
       }
     }
-  
+
     setDocuments(updatedDocuments);
-  
+
     localStorage.setItem('mditorDocs', JSON.stringify(updatedDocuments));
   };
 
@@ -195,6 +200,65 @@ const MarkdownEditor: React.FC = () => {
     textarea.setSelectionRange(startPos + textToInsert.length, startPos + textToInsert.length);
   };
 
+  // Public page logic ----------------------------------------------------------------------------------------------------------------------
+
+  const [showPageModal, setShowPageModal] = useState<boolean>(false)
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
+
+  const [slug, setSlug] = useState<string>(generateDocumentName);
+  const [author, setAuthor] = useState<string>("Anonymous")
+  const [title, setTitle] = useState<string>("Untitled Page")
+  const [content, setContent] = useState<string>(documents[currentDocumentIndex]?.content)
+  const [theme, setTheme] = useState<string>("default")
+  const [url, setUrl] = useState<string>("")
+
+  useEffect(() => {
+    // Set the content state according to the current document when the currentDocumentIndex changes
+    if (documents.length > 0) {
+      setContent(documents[currentDocumentIndex]?.content || '');
+    }
+  }, [currentDocumentIndex, documents]);
+
+
+  // Function to make a POST request
+  const createPublicPage = async () => {
+    console.log(content)
+    try {
+      const data: PageData = {
+        slug: slug,
+        content: content,
+        title: title,
+        author: author,
+        theme: theme
+      };
+      const response: AxiosResponse<string> = await axios.post<string>('https://5000-kunhnao-mditor-w50rz90hi9d.ws-eu108.gitpod.io/api', data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log(response.data);
+
+      setUrl("https://mditor.com/p/" + slug)
+
+      // reset states
+      setSlug(generateDocumentName)
+      setAuthor("Anonymous")
+      setTitle("Untitled Page")
+      setTheme("default")
+
+      // show url
+      setShowPageModal(false)
+      setShowSuccessModal(true)
+
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Uh, something went wrong.' + error)
+    }
+  }
+
+
+
+
   return (
     <>
       <header className="w-full px-4 py-3 fixed bg-gray-900 flex justify-between items-center">
@@ -207,7 +271,7 @@ const MarkdownEditor: React.FC = () => {
           </div>
         </div>
         <div className="flex w-fit items-center">
-          <button className="p-2 py-2 text-sm bg-slate-500 rounded-md ml-2 text-slate-700 hover:cursor-disabled flex items-center" disabled> <FaWandMagicSparkles className="mr-2"/> Create page (Soon)</button>
+          <button className="p-2 py-2 text-sm bg-teal-500 rounded-md ml-2 text-white hover:cursor-disabled flex items-center" onClick={(e) => setShowPageModal(true)}> <FaWandMagicSparkles className="mr-2" /> Create page</button>
           <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={handleCreateNewDocument}> New Document</button>
           <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={handleSaveDocument}>{saveButtonText}</button>
           <button className="p-2 py-0 text-white rounded-md ml-2 text-xl" onClick={toggleShowSidebar}>&#x2630;</button>
@@ -221,11 +285,11 @@ const MarkdownEditor: React.FC = () => {
           </div>
           <textarea onScroll={handleScroll} ref={editorRef} value={documents[currentDocumentIndex]?.content || ''} onChange={handleChange} className="w-full h-[94%] bg-zinc-200 p-4 outline-none font-mono"></textarea>
           <div className="absolute bottom-4 left-4 bg-white shadow-lg p-2 rounded-md text-sm flex items-center">
-            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('__Bold Text__')}><FaBold/></button>
-            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('_Italic Text_')}><FaItalic/></button>
-            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor(' `inline code`')}><FaCode/></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('__Bold Text__')}><FaBold /></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('_Italic Text_')}><FaItalic /></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor(' `inline code`')}><FaCode /></button>
             <button className="p-2 rounded-sm flex items-center hover:bg-slate-200 relative group">
-              <FaHeading/>
+              <FaHeading />
               <p className="text-[8px]">&#9650;</p>
               <div className="absolute bottom-10 rounded-md bg-white shadow-lg p-2 flex hidden group-hover:block">
                 <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-xl" onClick={() => insertTextAtCursor('# Large Heading')}>H1</p>
@@ -234,9 +298,9 @@ const MarkdownEditor: React.FC = () => {
                 <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-sm" onClick={() => insertTextAtCursor('#### Heading')}>H4</p>
               </div>
             </button>
-            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('> Quote')}><FaQuoteLeft/></button>
-            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('[caption](https://yoururl.com/link)')}><FaLink/></button>
-            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('![alt](https://yoururl.com/link)')}><FaImage/></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('> Quote')}><FaQuoteLeft /></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('[caption](https://yoururl.com/link)')}><FaLink /></button>
+            <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('![alt](https://yoururl.com/link)')}><FaImage /></button>
 
           </div>
         </div>
@@ -262,7 +326,7 @@ const MarkdownEditor: React.FC = () => {
         <section className="absolute top-0 right-0 w-[25vw] h-screen bg-gray-800 shadow-2xl py-4 px-8 ">
           <div className="flex justify-between items-center mb-5 ">
             <h1 className="text-xl text-teal-300">&#x2630; Menu</h1>
-            <FaX className="text-sm text-red-500" onClick={toggleShowSidebar}/>
+            <FaX className="text-sm text-red-500" onClick={toggleShowSidebar} />
           </div>
           <div className="mb-5">
             <h2 className="text-md text-white border-b mb-2 border-gray-700">Saved Documents</h2>
@@ -277,60 +341,56 @@ const MarkdownEditor: React.FC = () => {
           </div>
           <div className="mb-5">
             <h2 className="text-md text-white border-b mb-2 border-gray-700">Public Pages</h2>
-            
+
           </div>
         </section>
       ) : (<></>)}
-      {/*
-{ showPageModal ? (
-        <section className="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-[.8] pt-[2.5%]">
-        <div className="h-[95%] w-[70%] m-auto bg-white rounded-md p-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-teal-500">Create a page</h1>
-              <p className="text-md">Publish a public page from the current document</p>
-            </div>
-            <div>
-              <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={createPage}>Create Page</button>
-              <button className="p-2 py-2 text-sm bg-slate-300 text-gray-900 rounded-md ml-2 hover:bg-slate-400" onClick={(e) => setShowPageModal(false)}>Cancel</button>
-            </div>
-          </div>
-          <div className="mt-6">
-            <p className="text-md font-semibold">Select a title for your page:</p>
-            <input type="text" name="title" id="title" className="p-2 w-2/4 rounded-md border my-2" placeholder="Nmeza's PSA" onChange={(e) => setPageTitle(e.target.value)}/>
-            <p className="text-md font-semibold">Author name:</p>
-            <input type="text" name="title" id="title" className="p-2 w-2/4 rounded-md border my-2" placeholder="@xyu_txsu" onChange={(e) => setAuthor(e.target.value)}/>
-          </div>
-          <div className="mt-6">
-            <h3 className="text-md font-semibold">Choose a theme:</h3>
-            <div className="w-full mt-2">
-              <div className="p-2 inline-block mr-4 rounded-md bg-slate-200 ">
-                <img src="https://via.placeholder.com/200" alt="preview" className="rounded-md h-[180px] w-[250px]"/>
-                <p className="text-sm mt-2">Default</p>
-              </div>
-              <div className="p-2 inline-block mr-4 rounded-md">
-                <img src="https://via.placeholder.com/200" alt="preview" className="rounded-md h-[180px] w-[250px]"/>
-                <p className="text-sm mt-2">Default (Dark)</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      ):(<></>)}
 
-      { showSuccessModal ? (
-         <section className="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-[.8] pt-[200px]">
-         <div className="w-[50%] m-auto bg-white rounded-md p-8">
-           <h1 className="text-2xl font-bold">Your page was created 🎉</h1>
-           <p className="text-md">Your page will stay live untill the next wipe on September 4th.</p>
-           <input type="text" name="title" id="title" className="p-2 w-full rounded-md border my-2" value={pageUrl}/>
-           <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md hover:bg-teal-400">Copy Link</button>
-           <button className="p-2 py-2 text-sm bg-slate-300 text-gray-900 rounded-md ml-2 hover:bg-slate-400">Close</button>
-         </div>
-       </section>
+      {showPageModal ? (
+        <section className="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-[.8] pt-[2.5%]">
+          <div className="w-[70%] m-auto bg-white rounded-md p-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-teal-500">Create a page</h1>
+                <p className="text-md">Publish a public page from the current document</p>
+              </div>
+              <div>
+                <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={createPublicPage}>Create Page</button>
+                <button className="p-2 py-2 text-sm bg-slate-300 text-gray-900 rounded-md ml-2 hover:bg-slate-400" onClick={(e) => setShowPageModal(false)}>Cancel</button>
+              </div>
+            </div>
+            <div className="mt-6">
+              <p className="text-md font-semibold">Select a title for your page:</p>
+              <input type="text" name="title" id="title" className="p-2 w-2/4 rounded-md border my-2" placeholder="Untitled Page" onChange={(e) => setTitle(e.target.value)} />
+              <p className="text-md font-semibold">Author name:</p>
+              <input type="text" name="title" id="title" className="p-2 w-2/4 rounded-md border my-2" placeholder="Anonymous" onChange={(e) => setAuthor(e.target.value)} />
+            </div>
+            <div className="mt-6">
+              <h3 className="text-md font-semibold">Choose a theme:</h3>
+              <div className="w-full mt-2">
+                <div className="p-2 inline-block mr-4 rounded-md bg-slate-200" onClick={(e) => setTheme('default')}>
+                  <img src="https://via.placeholder.com/200" alt="preview" className="rounded-md h-[180px] w-[250px]" />
+                  <p className="text-sm mt-2">Default</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       ) : (<></>)}
-       */}
-      
+
+      {showSuccessModal ? (
+        <section className="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-[.8] pt-[200px]">
+          <div className="w-[50%] m-auto bg-white rounded-md p-8">
+            <h1 className="text-2xl font-bold">Your page was created 🎉</h1>
+            <p className="text-md">Your page will stay live untill the next wipe on September 4th.</p>
+            <input type="text" name="title" id="title" className="p-2 w-full rounded-md border my-2" value={url} />
+            <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md hover:bg-teal-400">Copy Link</button>
+            <button className="p-2 py-2 text-sm bg-slate-300 text-gray-900 rounded-md ml-2 hover:bg-slate-400" onClick={(e) => setShowSuccessModal(false)}>Close</button>
+          </div>
+        </section>
+      ) : (<></>)}
+
+
 
     </>
   );
