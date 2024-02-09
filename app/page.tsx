@@ -231,7 +231,7 @@ const MarkdownEditor: React.FC = () => {
         author: author,
         theme: theme
       };
-      const response: AxiosResponse<string> = await axios.post<string>('https://mditorapi.onrender.com', data, {
+      const response: AxiosResponse<string> = await axios.post<string>('https://mditorapi.onrender.com/api', data, {
         headers: {
           'Content-Type': 'application/json'
         }
