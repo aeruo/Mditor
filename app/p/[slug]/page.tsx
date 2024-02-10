@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import axios, { AxiosResponse } from 'axios';
+import { FaSpinner, FaX } from "react-icons/fa6";
 
 interface PostData {
     title: string;
@@ -32,7 +33,7 @@ export default function Page({ params }: Props) {
                 applyTheme(response.data.theme); // Apply the theme
             } catch (error) {
                 console.error('Error:', error);
-                setError('Uh, something went wrong. ');
+                setError(error as string);
             }
         };
 
@@ -49,14 +50,30 @@ export default function Page({ params }: Props) {
     };
 
     if (error) {
-        return <div>{error}</div>;
+        return (
+            <>
+            <section className="w-full h-screen flex flex-col items-center justify-center text-center p-16">
+                <FaX className="text-sm text-slate-500 mb-8"/>
+                <p className="text-slate-500 text-sm mb-8">Whoops, something went wrong. Either this page doesn't exist, or something went badly wrong on our side.<br/><br/>Either way, it's not your fault.</p>
+            </section>
+            </>
+        );
     }
 
     if (!postData) {
-        return <div>Loading...</div>;
+        return (
+            <>
+            <section className="w-full h-screen flex flex-col items-center justify-center text-center p-24">
+                <FaSpinner className="text-sm text-slate-500 animate-spin mb-8"/>
+                <p className="text-slate-500 text-sm">Create your own page like this one for free on<br/><a href="https://mditor.vercel.app">https://mditor.vercel.app</a></p>
+            </section>
+            </>
+        );
     }
 
     const { title, content, author } = postData;
+
+    document.title = title
 
     return (
         <main>

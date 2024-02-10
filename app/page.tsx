@@ -350,7 +350,7 @@ const MarkdownEditor: React.FC = () => {
       ) : (<></>)}
 
       {showPageModal ? (
-        <section className="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-[.8] pt-[2.5%]">
+        <section className="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-[.8] py-[2.5%] overflow-y-scroll">
           <div className="w-[70%] m-auto bg-white rounded-md p-8">
             <div className="flex items-center justify-between">
               <div>
@@ -362,6 +362,7 @@ const MarkdownEditor: React.FC = () => {
                 <button className="p-2 py-2 text-sm bg-slate-300 text-gray-900 rounded-md ml-2 hover:bg-slate-400" onClick={(e) => setShowPageModal(false)}>Cancel</button>
               </div>
             </div>
+            <p className="w-full rounded-md bg-red-200 p-2 text-black text-sm mt-5 flex items-center"><FaCircleInfo className="mr-2"/> Due to spinning down on the server, creating a page may take up to 50 seconds to complete.</p>
             <div className="mt-6">
               <p className="text-md font-semibold">Select a title for your page:</p>
               <input type="text" name="title" id="title" className="p-2 w-2/4 rounded-md border my-2" placeholder="Untitled Page" onChange={(e) => setTitle(e.target.value)} />
