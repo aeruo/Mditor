@@ -204,6 +204,7 @@ const MarkdownEditor: React.FC = () => {
 
   const [showPageModal, setShowPageModal] = useState<boolean>(false)
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
+  const [createBtnContent, setCreateBtnContent] = useState<string>('Create Page')
 
   const [slug, setSlug] = useState<string>(generateDocumentName);
   const [author, setAuthor] = useState<string>("Anonymous")
@@ -222,7 +223,7 @@ const MarkdownEditor: React.FC = () => {
 
   // Function to make a POST request
   const createPublicPage = async () => {
-    console.log(content)
+    setCreateBtnContent('Loading...')
     try {
       const data: PageData = {
         slug: slug,
@@ -245,6 +246,8 @@ const MarkdownEditor: React.FC = () => {
       setAuthor("Anonymous")
       setTitle("Untitled Page")
       setTheme("default")
+      setCreateBtnContent('Create Page')
+
 
       // show url
       setShowPageModal(false)
@@ -355,7 +358,7 @@ const MarkdownEditor: React.FC = () => {
                 <p className="text-md">Publish a public page from the current document</p>
               </div>
               <div>
-                <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={createPublicPage}>Create Page</button>
+                <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={createPublicPage}>{createBtnContent}</button>
                 <button className="p-2 py-2 text-sm bg-slate-300 text-gray-900 rounded-md ml-2 hover:bg-slate-400" onClick={(e) => setShowPageModal(false)}>Cancel</button>
               </div>
             </div>
