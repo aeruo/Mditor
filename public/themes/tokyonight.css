@@ -1,0 +1,126 @@
+body{
+    color: #a9b1d6; /* Adjusted text color */
+    background-color: #1a1b26; /* Adjusted background color */
+}
+main {
+    max-width: 700px;
+    margin: 50px auto;
+}
+
+.md * {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
+    font-weight: bold;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: #eeffff; /* Adjusted heading text color */
+}
+
+.md h1 {
+    font-size: 2em;
+}
+
+.md h2 {
+    font-size: 1.5em;
+}
+
+.md h3 {
+    font-size: 1.17em;
+}
+
+.md h4 {
+    font-size: 1em;
+}
+
+.md h5 {
+    font-size: 0.83em;
+}
+
+.md h6 {
+    font-size: 0.67em;
+}
+
+/* Lists */
+.md ul, .md ol {
+    margin-bottom: 1em;
+}
+
+.md li {
+    margin-bottom: 0.5em;
+}
+
+/* Links */
+.md a {
+    color: #6d87b3; /* Adjusted link color */
+    text-decoration: none;
+}
+
+.md a:hover {
+    text-decoration: underline;
+}
+
+/* Blockquotes */
+.md blockquote {
+    margin: 0;
+    padding: 0 1em;
+    border-left: 4px solid #4d4d4d; /* Adjusted blockquote border color */
+}
+
+/* Code */
+.md pre {
+    background-color: #2a2e3e; /* Adjusted code block background color */
+    padding: 1em;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.md code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    background-color: #2a2e3e; /* Adjusted code block background color */
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+}
+
+/* Tables */
+.md table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+.md th, .md td {
+    padding: 0.5em;
+    border: 1px solid #4d4d4d; /* Adjusted table border color */
+}
+
+.md th {
+    background-color: #1a1b26; /* Adjusted table header background color */
+    color: #a9b1d6; /* Adjusted table header text color */
+    font-weight: bold;
+}
+
+/* Images */
+.md img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto;
+}
+
+/* Horizontal Rule */
+.md hr {
+    border: 0;
+    border-top: 1px solid #4d4d4d; /* Adjusted horizontal rule color */
+    margin: 1em 0;
+}
+
+@media only screen 
+   and (max-width : 420px) {
+   main {
+    margin: 10px;
+   }
+}

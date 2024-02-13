@@ -45,7 +45,7 @@ export default function Page({ params }: Props) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = `/themes/${theme}.css`; // Assuming the themes are stored in the "public" directory
+        link.href = `/themes/${theme}.css`;
         document.head.appendChild(link);
     };
 

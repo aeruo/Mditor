@@ -1,0 +1,122 @@
+body{
+    background-color: #111;
+    color: white;
+}
+main{
+    max-width: 700px;
+    margin: 50px auto;
+}
+.md *{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
+    font-weight: bold;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.md h1 {
+    font-size: 2em;
+}
+
+.md h2 {
+    font-size: 1.5em;
+}
+
+.md h3 {
+    font-size: 1.17em;
+}
+
+.md h4 {
+    font-size: 1em;
+}
+
+.md h5 {
+    font-size: 0.83em;
+}
+
+.md h6 {
+    font-size: 0.67em;
+}
+
+/* Lists */
+.md ul, .md ol {
+    margin-bottom: 1em;
+}
+
+.md li {
+    margin-bottom: 0.5em;
+}
+
+/* Links */
+.md a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.md a:hover {
+    text-decoration: underline;
+}
+
+/* Blockquotes */
+.md blockquote {
+    margin: 0;
+    padding: 0 1em;
+    background-color: #444;
+}
+
+/* Code */
+.md pre {
+    background-color: #444;
+    padding: 1em;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.md code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    background-color: #444;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+}
+
+/* Tables */
+.md table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+.md th, .md td {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+}
+
+.md th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+/* Images */
+.md img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto;
+}
+
+/* Horizontal Rule */
+.md hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+}
+
+@media only screen 
+   and (max-width : 420px) {
+   main{
+    margin: 10px;
+   }
+}

@@ -262,6 +262,8 @@ const MarkdownEditor: React.FC = () => {
 
 
 
+
+
   return (
     <>
       <header className="w-full px-4 py-3 fixed bg-gray-900 flex justify-between items-center">
@@ -369,14 +371,17 @@ const MarkdownEditor: React.FC = () => {
               <p className="text-md font-semibold">Author name:</p>
               <input type="text" name="title" id="title" className="p-2 w-2/4 rounded-md border my-2" placeholder="Anonymous" onChange={(e) => setAuthor(e.target.value)} />
             </div>
-            <div className="mt-6">
+            <div className="mt-2">
               <h3 className="text-md font-semibold">Choose a theme:</h3>
-              <div className="w-full mt-2">
-                <div className="p-2 inline-block mr-4 rounded-md bg-slate-200" onClick={(e) => setTheme('default')}>
-                  <img src="https://via.placeholder.com/200" alt="preview" className="rounded-md h-[180px] w-[250px]" />
-                  <p className="text-sm mt-2">Default</p>
-                </div>
-              </div>
+              <select className="p-2 w-2/4 rounded-md border my-2" name="theme" id="theme">
+                <option value="default" className="text-sm text-black" onClick={(e) => setTheme('default')}>Default</option>
+                <option value="default_dark" className="text-sm text-black" onClick={(e) => setTheme('default_dark')}>Default (Dark)</option>
+                <option value="tokyonight" className="text-sm text-black" onClick={(e) => setTheme('tokyonight')}>Tokyonight</option>
+                <option value="synthwave" className="text-sm text-black" onClick={(e) => setTheme('synthwave')}>Synthwave</option>
+                <option value="monokai" className="text-sm text-black" onClick={(e) => setTheme('monokai')}>Monokai</option>
+                <option value="vue" className="text-sm text-black" onClick={(e) => setTheme('vue')}>Vue</option>
+                <option value="sepia" className="text-sm text-black" onClick={(e) => setTheme('sepia')}>Sepia</option>
+              </select>
             </div>
           </div>
         </section>

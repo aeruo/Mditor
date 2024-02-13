@@ -1,0 +1,127 @@
+body{  
+    color: #4c4135; /* Adjusted text color to a sepia tone */
+    background-color: #f5deb3; /* Adjusted background color to a sepia tone */
+}
+
+main {
+    max-width: 700px;
+    margin: 50px auto;
+}
+
+.md * {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
+    font-weight: bold;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: #4c4135; /* Adjusted heading text color to match the text color */
+}
+
+.md h1 {
+    font-size: 2em;
+}
+
+.md h2 {
+    font-size: 1.5em;
+}
+
+.md h3 {
+    font-size: 1.17em;
+}
+
+.md h4 {
+    font-size: 1em;
+}
+
+.md h5 {
+    font-size: 0.83em;
+}
+
+.md h6 {
+    font-size: 0.67em;
+}
+
+/* Lists */
+.md ul, .md ol {
+    margin-bottom: 1em;
+}
+
+.md li {
+    margin-bottom: 0.5em;
+}
+
+/* Links */
+.md a {
+    color: #6b4d36; /* Adjusted link color to a sepia tone */
+    text-decoration: none;
+}
+
+.md a:hover {
+    text-decoration: underline;
+}
+
+/* Blockquotes */
+.md blockquote {
+    margin: 0;
+    padding: 0 1em;
+    border-left: 4px solid #6b4d36; /* Adjusted blockquote border color to a sepia tone */
+}
+
+/* Code */
+.md pre {
+    background-color: #a09278; /* Adjusted code block background color to a sepia tone */
+    padding: 1em;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.md code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    background-color: #a09278; /* Adjusted code block background color to a sepia tone */
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+}
+
+/* Tables */
+.md table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+.md th, .md td {
+    padding: 0.5em;
+    border: 1px solid #6b4d36; /* Adjusted table border color to a sepia tone */
+}
+
+.md th {
+    background-color: #f5deb3; /* Adjusted table header background color to a sepia tone */
+    color: #4c4135; /* Adjusted table header text color to match the text color */
+    font-weight: bold;
+}
+
+/* Images */
+.md img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em auto;
+}
+
+/* Horizontal Rule */
+.md hr {
+    border: 0;
+    border-top: 1px solid #6b4d36; /* Adjusted horizontal rule color to a sepia tone */
+    margin: 1em 0;
+}
+
+@media only screen 
+   and (max-width : 420px) {
+   main {
+    margin: 10px;
+   }
+}
