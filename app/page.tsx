@@ -328,7 +328,7 @@ const MarkdownEditor: React.FC = () => {
         </div>
       </div>
       {showSidebar ? (
-        <section className="absolute top-0 right-0 w-[25vw] h-screen bg-gray-800 shadow-2xl py-4 px-8 ">
+        <section className="absolute top-0 right-0 w-[25vw] h-screen bg-gray-800 shadow-2xl py-4 px-8" onClick={toggleShowSidebar}>
           <div className="flex justify-between items-center mb-5 ">
             <h1 className="text-xl text-teal-300">&#x2630; Menu</h1>
             <FaX className="text-sm text-red-500" onClick={toggleShowSidebar} />
@@ -343,10 +343,6 @@ const MarkdownEditor: React.FC = () => {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="mb-5">
-            <h2 className="text-md text-white border-b mb-2 border-gray-700">Public Pages</h2>
-
           </div>
         </section>
       ) : (<></>)}
@@ -364,7 +360,7 @@ const MarkdownEditor: React.FC = () => {
                 <button className="p-2 py-2 text-sm bg-slate-300 text-gray-900 rounded-md ml-2 hover:bg-slate-400" onClick={(e) => setShowPageModal(false)}>Cancel</button>
               </div>
             </div>
-            <p className="w-full rounded-md bg-red-200 p-2 text-black text-sm mt-5 flex items-center"><FaCircleInfo className="mr-2"/> Due to spinning down on the server, creating a page may take up to 50 seconds to complete.</p>
+            <p className="w-full rounded-md bg-red-200 p-2 text-black text-sm mt-5 flex items-center"><FaCircleInfo className="mr-2" /> Due to spinning down on the server, creating a page may take up to 50 seconds to complete.</p>
             <div className="mt-6">
               <p className="text-md font-semibold">Select a title for your page:</p>
               <input type="text" name="title" id="title" className="p-2 w-2/4 rounded-md border my-2" placeholder="Untitled Page" onChange={(e) => setTitle(e.target.value)} />
@@ -373,14 +369,14 @@ const MarkdownEditor: React.FC = () => {
             </div>
             <div className="mt-2">
               <h3 className="text-md font-semibold">Choose a theme:</h3>
-              <select className="p-2 w-2/4 rounded-md border my-2" name="theme" id="theme">
-                <option value="default" className="text-sm text-black" onClick={(e) => setTheme('default')}>Default</option>
-                <option value="default_dark" className="text-sm text-black" onClick={(e) => setTheme('default_dark')}>Default (Dark)</option>
-                <option value="tokyonight" className="text-sm text-black" onClick={(e) => setTheme('tokyonight')}>Tokyonight</option>
-                <option value="synthwave" className="text-sm text-black" onClick={(e) => setTheme('synthwave')}>Synthwave</option>
-                <option value="monokai" className="text-sm text-black" onClick={(e) => setTheme('monokai')}>Monokai</option>
-                <option value="vue" className="text-sm text-black" onClick={(e) => setTheme('vue')}>Vue</option>
-                <option value="sepia" className="text-sm text-black" onClick={(e) => setTheme('sepia')}>Sepia</option>
+              <select className="p-2 w-2/4 rounded-md border my-2" name="theme" id="theme" onChange={(e) => setTheme(e.target.value)}>
+                <option value="default" className="text-sm text-black">Default</option>
+                <option value="default_dark" className="text-sm text-black">Default (Dark)</option>
+                <option value="tokyonight" className="text-sm text-black">Tokyonight</option>
+                <option value="synthwave" className="text-sm text-black">Synthwave</option>
+                <option value="monokai" className="text-sm text-black">Monokai</option>
+                <option value="vue" className="text-sm text-black">Vue</option>
+                <option value="sepia" className="text-sm text-black">Sepia</option>
               </select>
             </div>
           </div>
