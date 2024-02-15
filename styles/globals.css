@@ -36,3 +36,16 @@
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+ul {
+  list-style: circle;
+}
+
+ol {
+  list-style: decimal;
+}
+
+ul,
+ol {
+  margin-left: 30px;
+}

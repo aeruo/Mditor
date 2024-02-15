@@ -1,9 +1,14 @@
 "use client"
 import { useRef, useState, useEffect } from 'react';
-import { FaAngleDown, FaCircleInfo, FaEye, FaX, FaDeleteLeft, FaWandMagicSparkles, FaHeading, FaBold, FaUnderline, FaItalic, FaLink, FaImage, FaCode, FaQuoteLeft } from "react-icons/fa6";
+import { FaAngleDown, FaCircleInfo, FaEye, FaX, FaDeleteLeft, FaWandMagicSparkles, FaHeading, FaBold, FaUnderline, FaItalic, FaLink, FaImage, FaCode, FaQuoteLeft, FaWandSparkles } from "react-icons/fa6";
 import dynamic from 'next/dynamic';
 import ReactMarkdown from 'react-markdown';
 import axios, { AxiosResponse } from 'axios';
+import fs from 'fs';
+
+import resumeStarter from '@/templates/resume.js'
+import psaStarter from '@/templates/psa.js'
+import scienceStarter from '@/templates/science-project-report.js'
 
 interface Document {
   title: string;
@@ -200,6 +205,8 @@ const MarkdownEditor: React.FC = () => {
     textarea.setSelectionRange(startPos + textToInsert.length, startPos + textToInsert.length);
   };
 
+  
+
   // Public page logic ----------------------------------------------------------------------------------------------------------------------
 
   const [showPageModal, setShowPageModal] = useState<boolean>(false)
@@ -261,9 +268,6 @@ const MarkdownEditor: React.FC = () => {
 
 
 
-
-
-
   return (
     <>
       <header className="w-full px-4 py-3 fixed bg-gray-900 flex justify-between items-center">
@@ -289,7 +293,19 @@ const MarkdownEditor: React.FC = () => {
             <p className="text-sm font-mono ml-2">Markdown</p>
           </div>
           <textarea onScroll={handleScroll} ref={editorRef} value={documents[currentDocumentIndex]?.content || ''} onChange={handleChange} className="w-full h-[94%] bg-zinc-200 p-4 outline-none font-mono"></textarea>
-          <div className="absolute bottom-4 left-4 bg-white shadow-lg p-2 rounded-md text-sm flex items-center">
+          <div className="absolute bottom-4 left-4 bg-white p-2 shadow-lg rounded-md text-sm flex items center">
+            <button className="p-2 rounded-sm flex items-center hover:bg-slate-200 relative group">
+              <FaWandMagicSparkles />
+              <p className="text-[8px] ml-1">&#9650;</p>
+              <div className="absolute w-fit -left-3 bottom-10 rounded-md bg-white shadow-lg p-2 flex hidden group-hover:block">
+                <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-md" onClick={() => insertTextAtCursor(resumeStarter)}>Resume</p>
+                <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-md" onClick={() => insertTextAtCursor(psaStarter)}>PSA</p>
+                <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-md" onClick={() => insertTextAtCursor(scienceStarter)}>Science Project</p>
+                <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-md" onClick={() => insertTextAtCursor('### Heading')}>Project Documentation</p>
+              </div>
+            </button>
+          </div>
+          <div className="absolute bottom-4 left-20 bg-white shadow-lg p-2 rounded-md text-sm flex items-center">
             <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('__Bold Text__')}><FaBold /></button>
             <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor('_Italic Text_')}><FaItalic /></button>
             <button className="p-2 rounded-sm hover:bg-slate-200" onClick={() => insertTextAtCursor(' `inline code`')}><FaCode /></button>

@@ -1,7 +1,9 @@
-body{
-    
-    color: #35495e; /* Adjusted text color */
-    background-color: #f5f5f5; /* Adjusted background color */
+body {
+
+    color: #35495e;
+    /* Adjusted text color */
+    background-color: #ffffff;
+    /* Adjusted background color */
 }
 
 main {
@@ -15,11 +17,17 @@ main {
     color: inherit;
 }
 
-.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
+.md h1,
+.md h2,
+.md h3,
+.md h4,
+.md h5,
+.md h6 {
     font-weight: bold;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
-    color: #41b883; /* Adjusted heading text color */
+    color: #41b883;
+    /* Adjusted heading text color */
 }
 
 .md h1 {
@@ -47,7 +55,8 @@ main {
 }
 
 /* Lists */
-.md ul, .md ol {
+.md ul,
+.md ol {
     margin-bottom: 1em;
 }
 
@@ -57,7 +66,8 @@ main {
 
 /* Links */
 .md a {
-    color: #41b883; /* Adjusted link color */
+    color: #41b883;
+    /* Adjusted link color */
     text-decoration: none;
 }
 
@@ -69,12 +79,14 @@ main {
 .md blockquote {
     margin: 0;
     padding: 0 1em;
-    border-left: 4px solid #41b883; /* Adjusted blockquote border color */
+    border-left: 4px solid #41b883;
+    /* Adjusted blockquote border color */
 }
 
 /* Code */
 .md pre {
-    background-color: #f0f0f0; /* Adjusted code block background color */
+    background-color: #f0f0f0;
+    /* Adjusted code block background color */
     padding: 1em;
     border-radius: 4px;
     overflow-x: auto;
@@ -82,7 +94,8 @@ main {
 
 .md code {
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    background-color: #f0f0f0; /* Adjusted code block background color */
+    background-color: #f0f0f0;
+    /* Adjusted code block background color */
     padding: 0.2em 0.4em;
     border-radius: 4px;
 }
@@ -94,14 +107,18 @@ main {
     margin-bottom: 1em;
 }
 
-.md th, .md td {
+.md th,
+.md td {
     padding: 0.5em;
-    border: 1px solid #ddd; /* Adjusted table border color */
+    border: 1px solid #ddd;
+    /* Adjusted table border color */
 }
 
 .md th {
-    background-color: #f5f5f5; /* Adjusted table header background color */
-    color: #35495e; /* Adjusted table header text color */
+    background-color: #f5f5f5;
+    /* Adjusted table header background color */
+    color: #35495e;
+    /* Adjusted table header text color */
     font-weight: bold;
 }
 
@@ -116,13 +133,15 @@ main {
 /* Horizontal Rule */
 .md hr {
     border: 0;
-    border-top: 1px solid #ddd; /* Adjusted horizontal rule color */
+    border-top: 1px solid #ddd;
+    /* Adjusted horizontal rule color */
     margin: 1em 0;
 }
 
-@media only screen 
-   and (max-width : 420px) {
-   main {
-    margin: 10px;
-   }
+
+
+@media only screen and (max-width : 420px) {
+    main {
+        margin: 10px;
+    }
 }
