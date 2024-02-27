@@ -2,7 +2,7 @@ name: Nightmare Bot
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Runs every 30 minutes
+    - cron: '*/10 * * * *' # Runs every 30 minutes
 
 jobs:
   commit:
@@ -22,7 +22,7 @@ jobs:
 
       - name: Make commit
         run: |
-          echo "$(date)" >> nightmare.txt
+          echo "$(date)" >> server/nightmare.txt
           git config --global user.name 'Nightmare Bot'
           git config --global user.email 'mralabiemmanuel@gmail.com'
           git add .
