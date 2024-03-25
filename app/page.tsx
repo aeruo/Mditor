@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import axios, { AxiosResponse } from 'axios';
 import fs from 'fs';
 
+import Starter from '@/templates/starter.js'
 import resumeStarter from '@/templates/resume.js'
 import psaStarter from '@/templates/psa.js'
 import scienceStarter from '@/templates/science-project-report.js'
@@ -56,7 +57,7 @@ const MarkdownEditor: React.FC = () => {
     if (localStorageItem) {
       savedDocuments = JSON.parse(localStorageItem);
     } else {
-      const newDocument: Document = { title: generateDocumentName(), content: '# Welcome!' };
+      const newDocument: Document = { title: generateDocumentName(), content: Starter };
       savedDocuments.push(newDocument);
       setCurrentDocumentIndex(0);
       setCustomTitle(newDocument.title);
@@ -255,7 +256,6 @@ const MarkdownEditor: React.FC = () => {
       setTheme("default")
       setCreateBtnContent('Create Page')
 
-
       // show url
       setShowPageModal(false)
       setShowSuccessModal(true)
@@ -280,9 +280,9 @@ const MarkdownEditor: React.FC = () => {
           </div>
         </div>
         <div className="flex w-fit items-center">
-          <button className="p-2 py-2 text-sm bg-teal-500 rounded-md ml-2 text-white hover:cursor-disabled flex items-center" onClick={(e) => setShowPageModal(true)}> <FaWandMagicSparkles className="mr-2" /> Create page</button>
-          <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={handleCreateNewDocument}> New Document</button>
-          <button className="p-2 py-2 text-sm bg-teal-300 text-gray-900 rounded-md ml-2 hover:bg-teal-400" onClick={handleSaveDocument}>{saveButtonText}</button>
+          <button className="p-2 py-2 text-sm bg-teal-500 rounded-md ml-2 text-white hover:cursor-disabled flex items-center" onClick={(e) => setShowPageModal(true)}> <FaWandMagicSparkles className="mr-2" /> Publish as webpage</button>
+          <button className="p-2 py-2 text-sm bg-teal-300 text-white rounded-md ml-2 hover:bg-teal-400" onClick={handleCreateNewDocument}> New Document</button>
+          <button className="p-2 py-2 text-sm bg-teal-300 text-white rounded-md ml-2 hover:bg-teal-400" onClick={handleSaveDocument}>{saveButtonText}</button>
           <button className="p-2 py-0 text-white rounded-md ml-2 text-xl" onClick={toggleShowSidebar}>&#x2630;</button>
         </div>
       </header>
@@ -301,7 +301,6 @@ const MarkdownEditor: React.FC = () => {
                 <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-md" onClick={() => insertTextAtCursor(resumeStarter)}>Resume</p>
                 <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-md" onClick={() => insertTextAtCursor(psaStarter)}>PSA</p>
                 <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-md" onClick={() => insertTextAtCursor(scienceStarter)}>Science Project</p>
-                <p className="p-2 rounded-sm font-bold hover:bg-slate-200 text-md" onClick={() => insertTextAtCursor('### Heading')}>Project Documentation</p>
               </div>
             </button>
           </div>
@@ -336,7 +335,7 @@ const MarkdownEditor: React.FC = () => {
         </div>
       </main>
       <div className="w-full h-[5vh] border-t border-slate-500 flex items-center justify-between px-4">
-        <p className="text-sm text-slate-500 font-mono">v0.1.1 - Built by @KunHnao & <span className="underline font-mono">contributors</span>.</p>
+        <p className="text-sm text-slate-500 font-mono">v1.0.2 - Built by @Khun_Hnao & <span className="underline font-mono">contributors</span>.</p>
         <div className="w-fit flex">
           <label htmlFor="autoscroll" className="text-sm"> Scroll Sync
             <input type="checkbox" name="autoscroll" id="autoscroll" className="ml-1 relative top-[1px]" onClick={ToggleScrollSync} />
@@ -345,20 +344,19 @@ const MarkdownEditor: React.FC = () => {
       </div>
       {showSidebar ? (
         <section className="absolute top-0 right-0 w-[25vw] h-screen bg-gray-800 shadow-2xl py-4 px-8" onClick={toggleShowSidebar}>
-          <div className="flex justify-between items-center mb-5 ">
-            <h1 className="text-xl text-teal-300">&#x2630; Menu</h1>
-            <FaX className="text-sm text-red-500" onClick={toggleShowSidebar} />
+          <div className="flex justify-between items-center mb-5 mt-2">
+            <FaX className="text-sm text-red-500" onClick={toggleShowSidebar}/>
           </div>
           <div className="mb-5">
             <h2 className="text-md text-white border-b mb-2 border-gray-700">Saved Documents</h2>
-            <ul>
+            <div>
               {documents.map((doc, index) => (
-                <li key={index} className="text-sm px-2 border-l my-1 text-white font-light w-full bg-gray-900 py-1 hover:bg-teal-900 flex justify-between items-center cursor-pointer">
+                <p key={index} className="text-sm px-2 border-l text-white w-full bg-gray-900 py-1 hover:bg-teal-900 flex justify-between items-center cursor-pointer">
                   <p onClick={() => handleDocumentClick(index)}>{doc.title}</p>
                   <FaDeleteLeft className="hover:text-red-500 cursor-pointer" onClick={() => handleDeleteDocument(index)} />
-                </li>
+                </p>
               ))}
-            </ul>
+            </div>
           </div>
         </section>
       ) : (<></>)}

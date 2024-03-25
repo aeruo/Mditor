@@ -78,7 +78,7 @@ export default function Page({ params }: Props) {
     return (
         <main>
             <ReactMarkdown className="md mb-24">{content}</ReactMarkdown>
-            <span className="font-mono text-slate-500 text-sm">"{title}"<br/>Created by {author} on <a href="https://mditor.vercel.app" className="font-mono underline">mditor.vercel.app</a></span>
+            <span className="font-mono text-slate-500 text-sm">{title}<br/>Created by {author} on <a href="https://mditor.vercel.app" className="font-mono underline">mditor.vercel.app</a></span>
         </main>
     );
 }
